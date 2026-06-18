@@ -21,6 +21,37 @@ Create a PostgreSQL database with one of these providers:
 
 Copy the PostgreSQL connection string. This becomes `DATABASE_URL` in Render.
 
+## Required: DATABASE_URL On Render
+
+`DATABASE_URL` is required on Render. The backend cannot start without a hosted PostgreSQL connection string.
+
+Do not use the local Docker database URL on Render:
+
+```env
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/tb81tube?schema=public
+```
+
+On Render, `localhost` means the Render container itself. It does not point to your computer, and it does not point to your local Docker PostgreSQL.
+
+Use hosted PostgreSQL from one of these providers:
+
+- Render PostgreSQL
+- Neon
+- Supabase
+- Railway
+
+Hosted PostgreSQL URL example:
+
+```env
+DATABASE_URL=postgresql://username:password@host/database?sslmode=require
+```
+
+Add this value in Render:
+
+```text
+Service -> Environment -> Add Environment Variable -> DATABASE_URL
+```
+
 ## C) Create Render Web Service
 
 1. Open Render Dashboard.
@@ -75,15 +106,15 @@ Add these in Render environment settings. Do not put production secrets in `apps
 NODE_ENV=production
 NODE_VERSION=20.11.1
 PORT=4000
-DATABASE_URL=your_render_or_neon_postgres_url
-JWT_SECRET=your_strong_secret
+DATABASE_URL=hosted_postgres_url
+JWT_SECRET=strong_secret
 JWT_EXPIRES_IN=7d
-CORS_ORIGIN=https://your-mobile-or-web-origin.com
+CORS_ORIGIN=*
 DEV_MOCK_YOUTUBE_AUTH=false
-GOOGLE_CLIENT_ID=your_google_oauth_client_id
-GOOGLE_CLIENT_SECRET=your_google_oauth_client_secret
-GOOGLE_REDIRECT_URI=https://your-backend-domain.com/api/v1/connections/youtube/callback
-FRONTEND_URL=https://your-frontend-or-app-redirect-url.com
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GOOGLE_REDIRECT_URI=https://your-render-backend-url.onrender.com/api/v1/connections/youtube/callback
+FRONTEND_URL=https://your-render-backend-url.onrender.com
 ```
 
 Security reminders:
@@ -92,7 +123,7 @@ Security reminders:
 - Use a strong random `JWT_SECRET`.
 - `DEV_MOCK_YOUTUBE_AUTH=false` in production.
 - Never expose `GOOGLE_CLIENT_SECRET` to mobile or frontend code.
-- Set `CORS_ORIGIN` carefully to only trusted origins.
+- Set `CORS_ORIGIN` carefully to only trusted origins before public launch. `*` is acceptable only for short internal deployment testing.
 - Use official platform APIs only.
 
 ## F) Deploy
@@ -173,6 +204,29 @@ Also keep this Render environment variable:
 ```env
 NODE_VERSION=20.11.1
 ```
+
+### DATABASE_URL Empty On Render
+
+If Render startup shows:
+
+```text
+Prisma P1012
+The environment variable DATABASE_URL resolved to an empty string.
+```
+
+Fix:
+
+1. Open the Render Web Service.
+2. Go to the Environment tab.
+3. Add `DATABASE_URL`.
+4. Paste a hosted PostgreSQL URL, for example:
+   ```env
+   postgresql://username:password@host/database?sslmode=require
+   ```
+5. Save changes.
+6. Redeploy the service.
+
+Do not use your local Docker PostgreSQL URL on Render.
 
 ### Local Windows Prisma Generate EPERM
 
