@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "outDir": "dist",
+    "rootDir": "src"
+  },
+  "include": [
+    "src/app.ts",
+    "src/server.ts",
+    "src/config/**/*.ts",
+    "src/lib/**/*.ts",
+    "src/middleware/**/*.ts",
+    "src/modules/auth/**/*.ts",
+    "src/modules/library/contentItem.service.ts",
+    "src/modules/library/favorites.controller.ts",
+    "src/modules/library/favorites.routes.ts",
+    "src/modules/library/favorites.service.ts",
+    "src/modules/library/history.controller.ts",
+    "src/modules/library/history.routes.ts",
+    "src/modules/library/history.service.ts",
+    "src/modules/library/library.validation.ts",
+    "src/modules/library/playlists.controller.ts",
+    "src/modules/library/playlists.routes.ts",
+    "src/modules/library/playlists.service.ts",
+    "src/modules/search/**/*.ts",
+    "src/modules/youtube/**/*.ts",
+    "src/modules/platforms/youtube/**/*.ts",
+    "src/routes/index.ts",
+    "src/scripts/**/*.ts",
+    "src/types/**/*.d.ts",
+    "src/utils/apiResponse.ts",
+    "src/utils/apiError.ts"
+  ]
+}

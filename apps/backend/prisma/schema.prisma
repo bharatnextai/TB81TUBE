@@ -1,0 +1,143 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Platform {
+  YOUTUBE
+  JIOSAAVN
+  AMAZON_MUSIC
+  AIRTEL_WYNK
+  SPOTIFY
+}
+
+enum ContentType {
+  VIDEO
+  AUDIO
+}
+
+enum PlaybackType {
+  EMBEDDED_PLAYER
+  EXTERNAL_LINK
+  SDK_PLAYER
+}
+
+model User {
+  id                String             @id @default(cuid())
+  name              String
+  email             String             @unique
+  passwordHash      String
+  profileImage      String?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  connectedAccounts ConnectedAccount[]
+  playlists         Playlist[]
+  favorites         Favorite[]
+  watchHistory      WatchHistory[]
+  searchHistory     SearchHistory[]
+}
+
+model ConnectedAccount {
+  id             String    @id @default(cuid())
+  userId         String
+  platform       Platform
+  platformUserId String
+  accessToken    String
+  refreshToken   String?
+  tokenExpiry    DateTime?
+  scope          String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, platform, platformUserId])
+  @@index([userId])
+  @@index([platform, platformUserId])
+}
+
+model ContentItem {
+  id                String          @id @default(cuid())
+  platform          Platform
+  externalContentId String
+  title             String
+  description       String?
+  thumbnailUrl      String?
+  creatorName       String?
+  duration          Int?
+  contentType       ContentType
+  sourceUrl         String?
+  playbackType      PlaybackType
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  playlistItems     PlaylistItem[]
+  favorites         Favorite[]
+  watchHistory      WatchHistory[]
+
+  @@unique([platform, externalContentId])
+  @@index([platform, contentType])
+}
+
+model Playlist {
+  id          String         @id @default(cuid())
+  userId      String
+  name        String
+  description String?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items       PlaylistItem[]
+
+  @@index([userId])
+}
+
+model PlaylistItem {
+  id            String      @id @default(cuid())
+  playlistId    String
+  contentItemId String
+  addedAt       DateTime    @default(now())
+  playlist      Playlist    @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+  contentItem   ContentItem @relation(fields: [contentItemId], references: [id], onDelete: Cascade)
+
+  @@unique([playlistId, contentItemId])
+  @@index([contentItemId])
+}
+
+model Favorite {
+  id            String      @id @default(cuid())
+  userId        String
+  contentItemId String
+  createdAt     DateTime    @default(now())
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contentItem   ContentItem @relation(fields: [contentItemId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, contentItemId])
+  @@index([contentItemId])
+}
+
+model WatchHistory {
+  id              String      @id @default(cuid())
+  userId          String
+  contentItemId   String
+  watchedAt       DateTime    @default(now())
+  progressSeconds Int         @default(0)
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contentItem     ContentItem @relation(fields: [contentItemId], references: [id], onDelete: Cascade)
+
+  @@index([userId, watchedAt])
+  @@index([contentItemId])
+}
+
+model SearchHistory {
+  id          String   @id @default(cuid())
+  userId      String
+  query       String
+  filtersJson Json?
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}

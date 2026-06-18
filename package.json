@@ -1,0 +1,27 @@
+{
+  "name": "tb81tube",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "db:up": "docker compose up -d postgres",
+    "db:down": "docker compose down",
+    "db:logs": "docker compose logs -f postgres",
+    "db:check": "npm run db:check -w @tb81tube/backend",
+    "dev:backend": "npm run dev -w @tb81tube/backend",
+    "dev:mobile": "npm run dev -w @tb81tube/mobile",
+    "build:mobile:android:preview": "npm run build:android:preview -w @tb81tube/mobile",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  },
+  "devDependencies": {
+    "@types/react": "~18.3.12",
+    "metro": "0.81.5",
+    "metro-cache": "0.81.5",
+    "metro-config": "0.81.5",
+    "metro-core": "0.81.5",
+    "metro-resolver": "0.81.5",
+    "react-native": "0.76.9"
+  }
+}

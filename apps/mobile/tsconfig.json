@@ -1,0 +1,30 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": [
+    "App.tsx",
+    "src/components/AppButton.tsx",
+    "src/components/AppText.tsx",
+    "src/components/Screen.tsx",
+    "src/config/api.ts",
+    "src/navigation/AuthNavigator.tsx",
+    "src/navigation/MainTabNavigator.tsx",
+    "src/navigation/MainTabs.tsx",
+    "src/navigation/RootNavigator.tsx",
+    "src/screens/auth/**/*.tsx",
+    "src/screens/main/**/*.tsx",
+    "src/services/apiClient.ts",
+    "src/services/authService.ts",
+    "src/store/AuthContext.tsx",
+    "src/store/authStore.ts",
+    "src/theme/**/*.ts",
+    "src/types/auth.ts",
+    "src/types/index.ts",
+    "src/utils/**/*.ts"
+  ]
+}
