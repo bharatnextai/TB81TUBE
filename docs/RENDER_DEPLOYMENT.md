@@ -26,21 +26,29 @@ Copy the PostgreSQL connection string. This becomes `DATABASE_URL` in Render.
 1. Open Render Dashboard.
 2. Create a new Web Service.
 3. Connect your GitHub repository.
-4. Set the root directory to:
+4. Select the branch that contains the full TB81TUBE project:
    ```text
-   .
+   TB81TUBE
    ```
-5. Use runtime:
+5. Leave Root Directory empty. Do not set it to `src` or `apps/backend`.
+6. Use runtime:
    ```text
    Node
    ```
 
 ## D) Commands
 
+Required Render settings:
+
+```text
+Branch: TB81TUBE
+Root Directory: leave empty
+```
+
 Build command:
 
 ```bash
-npm install && npm run build -w @tb81tube/backend
+npm install && npm run db:generate -w @tb81tube/backend && npm run build -w @tb81tube/backend
 ```
 
 Start command:
@@ -55,7 +63,9 @@ Health check path:
 /health
 ```
 
-The root `render.yaml` contains the same backend service configuration.
+The root `render.yaml` contains the same backend service configuration. It does not set `rootDir`, so Render should use the repository root where `package.json` exists.
+
+Prisma Client must be generated before TypeScript builds. Otherwise `@prisma/client` enum/type exports such as `Platform`, `ContentType`, `PlaybackType`, and `ConnectedAccount` may be missing during `tsc`.
 
 ## E) Environment Variables
 
@@ -63,6 +73,7 @@ Add these in Render environment settings. Do not put production secrets in `apps
 
 ```env
 NODE_ENV=production
+NODE_VERSION=20.11.1
 PORT=4000
 DATABASE_URL=your_render_or_neon_postgres_url
 JWT_SECRET=your_strong_secret
@@ -77,6 +88,7 @@ FRONTEND_URL=https://your-frontend-or-app-redirect-url.com
 
 Security reminders:
 
+- Use Node LTS 20 on Render. Node 24 can cause dependency/tooling compatibility issues.
 - Use a strong random `JWT_SECRET`.
 - `DEV_MOCK_YOUTUBE_AUTH=false` in production.
 - Never expose `GOOGLE_CLIENT_SECRET` to mobile or frontend code.
@@ -88,8 +100,9 @@ Security reminders:
 1. Click Deploy in Render.
 2. Wait for dependencies to install.
 3. Confirm backend build completes.
-4. Confirm Prisma migration deploy runs during start.
-5. Confirm the web service becomes healthy.
+4. Confirm Prisma Client generation runs before TypeScript build.
+5. Confirm Prisma migration deploy runs during start.
+6. Confirm the web service becomes healthy.
 
 ## G) Test Render Deployment
 
@@ -107,6 +120,69 @@ Expected result:
   "message": "TB81TUBE backend is running"
 }
 ```
+
+## Troubleshooting
+
+### Render Cannot Read package.json
+
+If Render shows:
+
+```text
+npm error enoent Could not read package.json
+path /opt/render/project/src/package.json
+```
+
+Check:
+
+- Render selected branch must be `TB81TUBE`.
+- Root Directory must be empty.
+- `package.json` must exist at the repository root.
+- Do not set Root Directory to `src`.
+- Do not set Root Directory to `apps/backend` when using workspace commands.
+- Build command must run from the repository root:
+  ```bash
+  npm install && npm run db:generate -w @tb81tube/backend && npm run build -w @tb81tube/backend
+  ```
+- Start command must run from the repository root:
+  ```bash
+  npm run db:migrate:deploy -w @tb81tube/backend && npm run start -w @tb81tube/backend
+  ```
+
+### Prisma Client Types Missing During Build
+
+If Render shows:
+
+```text
+@prisma/client has no exported member 'Platform'
+@prisma/client has no exported member 'ContentType'
+@prisma/client has no exported member 'PlaybackType'
+@prisma/client has no exported member 'ConnectedAccount'
+Property 'PrismaClientKnownRequestError' does not exist on type 'typeof Prisma'
+```
+
+It means Prisma Client was not generated before TypeScript build.
+
+Fix the Render build command by adding Prisma generate before build:
+
+```bash
+npm install && npm run db:generate -w @tb81tube/backend && npm run build -w @tb81tube/backend
+```
+
+Also keep this Render environment variable:
+
+```env
+NODE_VERSION=20.11.1
+```
+
+### Local Windows Prisma Generate EPERM
+
+If local `npm.cmd run db:generate -w @tb81tube/backend` shows:
+
+```text
+EPERM: operation not permitted, rename ... query_engine-windows.dll.node
+```
+
+Stop any running backend dev server, close terminals using the app, then run Prisma generate again. On Windows, the Prisma query engine DLL can be locked by a running Node process or antivirus while Prisma tries to replace it.
 
 Test API status:
 

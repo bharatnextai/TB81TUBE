@@ -2,8 +2,7 @@ services:
   - type: web
     name: tb81tube-backend
     runtime: node
-    rootDir: .
-    buildCommand: npm install && npm run build -w @tb81tube/backend
+    buildCommand: npm install && npm run db:generate -w @tb81tube/backend && npm run build -w @tb81tube/backend
     startCommand: npm run db:migrate:deploy -w @tb81tube/backend && npm run start -w @tb81tube/backend
     healthCheckPath: /health
     envVars:
@@ -11,6 +10,8 @@ services:
         value: production
       - key: PORT
         value: 4000
+      - key: NODE_VERSION
+        value: 20.11.1
       - key: DATABASE_URL
         sync: false
       - key: JWT_SECRET
