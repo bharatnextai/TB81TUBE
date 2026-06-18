@@ -68,7 +68,7 @@ eas build:configure
 The project includes `apps/mobile/eas.json` with these profiles:
 
 - `development`: internal APK-style development build profile.
-- `preview`: internal APK build for testers.
+- `preview`: internal APK build for testers. It builds APK and uses `https://tb81tube.onrender.com/api/v1`.
 - `production`: app bundle profile for later release preparation.
 
 ## E) Build Preview APK
@@ -98,15 +98,15 @@ Use these steps when the APK should talk to a hosted backend instead of local de
 1. Deploy the backend first.
 2. Confirm backend health:
    ```text
-   https://your-backend-url.com/health
+   https://tb81tube.onrender.com/health
    ```
 3. Confirm API status:
    ```text
-   https://your-backend-url.com/api/v1/status
+   https://tb81tube.onrender.com/api/v1/status
    ```
-4. Set mobile env in `apps/mobile/.env`:
+4. Confirm the preview EAS profile uses the hosted backend:
    ```env
-   EXPO_PUBLIC_API_BASE_URL=https://your-backend-url.com/api/v1
+   EXPO_PUBLIC_API_BASE_URL=https://tb81tube.onrender.com/api/v1
    ```
 5. Run typecheck:
    ```powershell
@@ -123,6 +123,12 @@ For production users outside your local Wi-Fi, the backend must be hosted online
 ## Backend API URL For APK Testing
 
 For APK testing on a physical phone, `localhost` will not work because it points to the phone itself.
+
+For normal users and preview APK testing, use the hosted Render backend:
+
+```env
+EXPO_PUBLIC_API_BASE_URL=https://tb81tube.onrender.com/api/v1
+```
 
 For local Wi-Fi testing, use your computer LAN IP in `apps/mobile/.env`:
 

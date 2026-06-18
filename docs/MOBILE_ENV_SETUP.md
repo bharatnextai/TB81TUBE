@@ -57,6 +57,22 @@ EXPO_PUBLIC_API_BASE_URL=http://192.168.1.99:4000/api/v1
 
 Then rebuild the APK so the environment value is included.
 
+## Preview APK With Render Backend
+
+The hosted Render backend is:
+
+```text
+https://tb81tube.onrender.com
+```
+
+The EAS `preview` profile is configured to use:
+
+```env
+EXPO_PUBLIC_API_BASE_URL=https://tb81tube.onrender.com/api/v1
+```
+
+This means preview APK builds use the hosted Render backend instead of `localhost`.
+
 ## Production APK
 
 For a final user app, the backend must be hosted online.
@@ -64,7 +80,7 @@ For a final user app, the backend must be hosted online.
 Use the hosted backend URL:
 
 ```env
-EXPO_PUBLIC_API_BASE_URL=https://your-hosted-backend-url.com/api/v1
+EXPO_PUBLIC_API_BASE_URL=https://tb81tube.onrender.com/api/v1
 ```
 
 Before building:
