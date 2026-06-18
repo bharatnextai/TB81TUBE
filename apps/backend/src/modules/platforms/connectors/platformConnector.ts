@@ -21,6 +21,8 @@ export type PlatformSearchInput = {
   userId: string;
   query: string;
   filters?: {
+    maxResults?: number;
+    pageToken?: string;
     order?: "date" | "rating" | "relevance" | "title" | "videoCount" | "viewCount";
     duration?: "any" | "short" | "medium" | "long";
     language?: string;

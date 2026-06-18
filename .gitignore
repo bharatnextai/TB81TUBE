@@ -1,11 +1,18 @@
 .env
+.env.local
+.env.*.local
 .env.*
 !.env.example
+apps/backend/.env
+apps/mobile/.env
 
 node_modules/
 dist/
 dist-web/
+build/
 coverage/
+.expo/
+.eas/
 
 *.log
 npm-debug.log*

@@ -48,6 +48,12 @@ It is configured in:
 src/config/api.ts
 ```
 
+Full mobile environment setup guide:
+
+```text
+docs/MOBILE_ENV_SETUP.md
+```
+
 You can override it with an Expo environment variable:
 
 ```powershell
@@ -408,6 +414,12 @@ Android EAS build setup is documented in:
 
 ```text
 docs/ANDROID_BUILD.md
+```
+
+Mobile API environment setup is documented in:
+
+```text
+docs/MOBILE_ENV_SETUP.md
 ```
 
 Install EAS CLI:

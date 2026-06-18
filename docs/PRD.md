@@ -4,7 +4,9 @@
 
 ## 1. Project Overview
 
-TB81TUBE is a YouTube-style mobile video and audio discovery app where users can create an account, connect entertainment platforms through official login APIs, search content, play supported media through official players, and organize content inside the app.
+TB81TUBE is a unified audio/video media app. Users create a TB81TUBE account, connect permitted media accounts, browse videos/audio/playlists returned by the backend, and play supported content through each platform's official allowed playback method.
+
+The product is backend-led by design. The mobile app must not scrape platforms or directly fetch private platform data. The backend owns connected account APIs, token storage, token refresh, platform-specific API calls, and response normalization. The mobile app calls TB81TUBE backend APIs and receives a unified content format.
 
 The long-term product vision is a unified entertainment hub for multiple platforms:
 
@@ -17,6 +19,42 @@ The long-term product vision is a unified entertainment hub for multiple platfor
 The MVP version focuses only on YouTube. YouTube metadata must come from the official YouTube Data API, and YouTube playback must use the official YouTube player/embed approach.
 
 TB81TUBE must not download, extract, scrape, proxy, cache, or rehost third-party media.
+
+### Product Purpose
+
+The purpose of TB81TUBE is to give users one compliant app for discovering, playing, saving, and organizing permitted media from connected accounts.
+
+Main user flow:
+
+1. User registers or logs in to TB81TUBE.
+2. User connects media accounts from Connected Accounts.
+3. Backend stores connected account tokens securely.
+4. Backend fetches permitted data from connected platforms through official APIs.
+5. Mobile app displays fetched videos, audio, playlists, favorites, and history.
+6. User plays video/audio using the official allowed playback method for that platform.
+
+Playback types:
+
+- `EMBEDDED_PLAYER`: play inside TB81TUBE using an official embed/player.
+- `SDK_PLAYER`: play inside TB81TUBE using an official platform SDK.
+- `EXTERNAL_LINK`: open the source platform/app when internal playback is not allowed.
+
+Unified content response shape:
+
+```json
+{
+  "platform": "YOUTUBE",
+  "contentType": "VIDEO",
+  "externalContentId": "video_id",
+  "title": "Video title",
+  "description": "Description",
+  "thumbnailUrl": "thumbnail_url",
+  "creatorName": "Creator",
+  "duration": "PT5M20S",
+  "sourceUrl": "https://...",
+  "playbackType": "EMBEDDED_PLAYER"
+}
+```
 
 ## 2. Problem Statement
 
@@ -611,6 +649,22 @@ Future integrations must require official support:
 - Clear provider terms allowing the intended use.
 
 No unsupported provider should be enabled through scraping or unofficial APIs.
+
+Platform behavior:
+
+- YouTube: fetch channel, videos, playlists, playlist items, and search results through YouTube Data API. Play videos using official YouTube embed/player.
+- Music platforms: connect only when official API/SDK access is available. If full playback is not allowed, show permitted metadata and open the official platform/app with `EXTERNAL_LINK`.
+- Future platforms: use the same backend connector architecture and return the same unified content format.
+
+Required connector methods:
+
+- `connect`
+- `refreshToken`
+- `getProfile`
+- `getPlaylists`
+- `getPlaylistItems`
+- `search`
+- `getPlaybackInfo`
 
 ## 14. Security Requirements
 

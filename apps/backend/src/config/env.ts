@@ -50,6 +50,10 @@ if (!parsedEnv.success) {
 
 export const env = parsedEnv.data;
 
+if (env.NODE_ENV === "production" && env.DEV_MOCK_YOUTUBE_AUTH) {
+  throw new Error("DEV_MOCK_YOUTUBE_AUTH cannot be enabled in production.");
+}
+
 function isGoogleClientIdLikelyValid(clientId: string, clientSecret: string) {
   const trimmedClientId = clientId.trim();
   const trimmedClientSecret = clientSecret.trim();

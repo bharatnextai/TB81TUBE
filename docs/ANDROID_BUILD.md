@@ -91,6 +91,35 @@ Or from the project root:
 npm.cmd run build:mobile:android:preview
 ```
 
+## Production-Oriented Preview APK Steps
+
+Use these steps when the APK should talk to a hosted backend instead of local development.
+
+1. Deploy the backend first.
+2. Confirm backend health:
+   ```text
+   https://your-backend-url.com/health
+   ```
+3. Confirm API status:
+   ```text
+   https://your-backend-url.com/api/v1/status
+   ```
+4. Set mobile env in `apps/mobile/.env`:
+   ```env
+   EXPO_PUBLIC_API_BASE_URL=https://your-backend-url.com/api/v1
+   ```
+5. Run typecheck:
+   ```powershell
+   npm.cmd run typecheck
+   ```
+6. Build preview APK:
+   ```powershell
+   cd apps/mobile
+   eas build --platform android --profile preview
+   ```
+
+For production users outside your local Wi-Fi, the backend must be hosted online.
+
 ## Backend API URL For APK Testing
 
 For APK testing on a physical phone, `localhost` will not work because it points to the phone itself.

@@ -29,6 +29,7 @@
     "src/modules/library/playlists.service.ts",
     "src/modules/search/**/*.ts",
     "src/modules/youtube/**/*.ts",
+    "src/modules/platforms/connectors/**/*.ts",
     "src/modules/platforms/youtube/**/*.ts",
     "src/routes/index.ts",
     "src/scripts/**/*.ts",

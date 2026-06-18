@@ -171,6 +171,7 @@ export function PlayerScreen({ navigation, route }: Props) {
         <View style={styles.meta}>
           <AppText variant="heading">{contentItem.title}</AppText>
           <AppText muted>{contentItem.creatorName ?? "Unknown creator"}</AppText>
+          <AppText muted>Playback uses the official allowed player method for each platform.</AppText>
 
           <View style={styles.badgeRow}>
             <View style={styles.platformBadge}>

@@ -103,6 +103,8 @@ EXPO_PUBLIC_API_BASE_URL=http://192.168.1.99:4000/api/v1
 
 Restart Expo after changing `apps/mobile/.env`.
 
+Full mobile environment guide: [docs/MOBILE_ENV_SETUP.md](docs/MOBILE_ENV_SETUP.md)
+
 ## Google OAuth
 
 Mock mode is for development only:
@@ -125,12 +127,49 @@ Full setup guide: [docs/GOOGLE_OAUTH_SETUP.md](docs/GOOGLE_OAUTH_SETUP.md)
 
 ## QA And Build Docs
 
+- GitHub push guide: [docs/GITHUB_PUSH_GUIDE.md](docs/GITHUB_PUSH_GUIDE.md)
 - MVP testing checklist: [docs/MVP_TESTING_CHECKLIST.md](docs/MVP_TESTING_CHECKLIST.md)
 - Build readiness notes: [docs/BUILD_READINESS.md](docs/BUILD_READINESS.md)
+- Backend deployment guide: [docs/DEPLOY_BACKEND.md](docs/DEPLOY_BACKEND.md)
+- Render deployment guide: [docs/RENDER_DEPLOYMENT.md](docs/RENDER_DEPLOYMENT.md)
 - Android EAS build guide: [docs/ANDROID_BUILD.md](docs/ANDROID_BUILD.md)
+- Mobile environment setup: [docs/MOBILE_ENV_SETUP.md](docs/MOBILE_ENV_SETUP.md)
 - API testing guide: [docs/API_TESTING.md](docs/API_TESTING.md)
 - Database setup: [docs/DATABASE_SETUP.md](docs/DATABASE_SETUP.md)
 - Launch checklist: [docs/LAUNCH_CHECKLIST.md](docs/LAUNCH_CHECKLIST.md)
+
+## Deploy Backend To Render
+
+The repository includes a root `render.yaml` for the backend web service.
+
+Render guide:
+
+```text
+docs/RENDER_DEPLOYMENT.md
+```
+
+Render backend basics:
+
+- Build command: `npm install && npm run build -w @tb81tube/backend`
+- Start command: `npm run db:migrate:deploy -w @tb81tube/backend && npm run start -w @tb81tube/backend`
+- Health check path: `/health`
+- Production secrets must be added in Render environment settings, not committed to `.env`.
+
+## Push To GitHub And Deploy
+
+Use the GitHub push guide before publishing the repository:
+
+```text
+docs/GITHUB_PUSH_GUIDE.md
+```
+
+After pushing:
+
+- Deploy backend with [docs/RENDER_DEPLOYMENT.md](docs/RENDER_DEPLOYMENT.md) or [docs/DEPLOY_BACKEND.md](docs/DEPLOY_BACKEND.md).
+- Add production environment variables in the hosting dashboard.
+- Use hosted PostgreSQL.
+- Set mobile `EXPO_PUBLIC_API_BASE_URL` using [docs/MOBILE_ENV_SETUP.md](docs/MOBILE_ENV_SETUP.md).
+- Build APK using [docs/ANDROID_BUILD.md](docs/ANDROID_BUILD.md).
 
 ## Legal And API Policy Notes
 

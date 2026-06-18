@@ -14,6 +14,11 @@
     "android": {
       "package": "com.tb81tube.app",
       "versionCode": 1
+    },
+    "extra": {
+      "eas": {
+        "projectId": "aa85da24-fe57-44c9-adae-5f63f1e57c60"
+      }
     }
   }
 }

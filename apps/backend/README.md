@@ -332,6 +332,21 @@ docker compose up -d postgres
 npm.cmd run db:check -w @tb81tube/backend
 ```
 
+Production deployment notes are documented in:
+
+```text
+docs/DEPLOY_BACKEND.md
+```
+
+Production deploy command sequence:
+
+```powershell
+npm.cmd install
+npm.cmd run db:migrate:deploy -w @tb81tube/backend
+npm.cmd run build -w @tb81tube/backend
+npm.cmd run start -w @tb81tube/backend
+```
+
 Then start the backend:
 
 ```powershell

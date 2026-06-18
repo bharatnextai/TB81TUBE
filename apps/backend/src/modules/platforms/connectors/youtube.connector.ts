@@ -50,7 +50,10 @@ export class YouTubeConnector implements PlatformConnector {
   }
 
   async search(input: PlatformSearchInput) {
-    return searchVideos(input.userId, input.query, input.filters);
+    return searchVideos(input.userId, input.query, {
+      maxResults: input.filters?.maxResults,
+      pageToken: input.filters?.pageToken
+    });
   }
 
   async getPlaylists(input: PlatformPlaylistInput) {

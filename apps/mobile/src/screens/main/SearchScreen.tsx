@@ -72,7 +72,7 @@ export function SearchScreen() {
       <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <AppText variant="title">Search</AppText>
-          <AppText muted>Find videos and media from your connected accounts.</AppText>
+          <AppText muted>Search videos and media from your connected accounts.</AppText>
         </View>
 
         <View style={styles.searchRow}>

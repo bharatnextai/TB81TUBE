@@ -189,7 +189,7 @@ export function ConnectedAccountsScreen() {
         <View style={styles.header}>
           <View style={styles.headerText}>
             <AppText variant="title">Connected Accounts</AppText>
-            <AppText muted>Connect your accounts to access your videos, playlists, and media.</AppText>
+            <AppText muted>Connect accounts so TB81TUBE can fetch your permitted media data through the backend.</AppText>
           </View>
           <Pressable accessibilityRole="button" onPress={() => fetchConnections()} style={styles.refreshButton} disabled={refreshing}>
             {refreshing ? <ActivityIndicator color={colors.text} size="small" /> : <AppText style={styles.refreshText}>Refresh</AppText>}
