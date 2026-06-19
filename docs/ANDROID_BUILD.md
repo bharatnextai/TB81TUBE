@@ -79,6 +79,19 @@ From `apps/mobile`:
 eas build --platform android --profile preview
 ```
 
+The current working APK should be built with the preview profile and a clean EAS cache:
+
+```powershell
+cd apps/mobile
+eas build --platform android --profile preview --clear-cache
+```
+
+This APK uses the hosted Render API:
+
+```env
+EXPO_PUBLIC_API_BASE_URL=https://tb81tube.onrender.com/api/v1
+```
+
 Alternative without global install:
 
 ```powershell

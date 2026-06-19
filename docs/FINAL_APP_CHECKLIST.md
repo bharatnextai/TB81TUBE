@@ -2,6 +2,16 @@
 
 Use this checklist before considering TB81TUBE ready for a public or production-style build.
 
+## MVP Mock Mode Status: Working
+
+- APK works with the hosted Render backend.
+- Render backend URL: `https://tb81tube.onrender.com`.
+- API base URL: `https://tb81tube.onrender.com/api/v1`.
+- Hosted PostgreSQL database is working.
+- Database migrations are applied successfully.
+- `DEV_MOCK_YOUTUBE_AUTH=true` is enabled only for internal demo/testing.
+- Real Google OAuth is still required before public production release.
+
 ## Backend And API
 
 - Backend deployed.

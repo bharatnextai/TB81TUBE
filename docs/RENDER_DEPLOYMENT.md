@@ -2,6 +2,29 @@
 
 Use this guide to deploy the TB81TUBE backend to Render with a hosted PostgreSQL database.
 
+## Current Render MVP Status
+
+The current TB81TUBE Render backend is live:
+
+```text
+https://tb81tube.onrender.com
+```
+
+For internal demo/testing, Render currently uses:
+
+```env
+DEV_MOCK_YOUTUBE_AUTH=true
+```
+
+For public production release, disable mock mode and configure real Google OAuth credentials:
+
+```env
+DEV_MOCK_YOUTUBE_AUTH=false
+GOOGLE_CLIENT_ID=real Google OAuth web client ID
+GOOGLE_CLIENT_SECRET=real Google OAuth client secret
+GOOGLE_REDIRECT_URI=https://tb81tube.onrender.com/api/v1/connections/youtube/callback
+```
+
 ## A) Push Project To GitHub
 
 Render deploys from a Git repository.
